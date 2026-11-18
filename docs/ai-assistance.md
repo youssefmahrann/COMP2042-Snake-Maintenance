@@ -13,3 +13,9 @@
 - Codex reproduced the coordinate and overlap defects with deterministic JUnit tests, implemented placement from free cells, and verified the Silver coin capacity and win-target behavior.
 - Codex prepared a temporary copy of baseline commit 4ac2dfb with the original placement rules and the two regression tests. The visible VS Code terminal run reported 33 tests and two expected failures. Its original output is saved in docs/evidence.
 - The saved-log screenshots show the original failing and passing Maven runs. The fixed branch passed all 37 JUnit tests, including the existing Rainbow coin and direction-validation tests. Manual gameplay testing has not been confirmed.
+
+## Coin spawning and full-board handling
+
+- Codex traced coin placement and the win path, added a deterministic reproducer for the original retry loop, and implemented the shared free-cell scan and final-coin handling.
+- Codex added regression tests for scoring once, continuing when space remains, skipping replacement after a win, and resetting the win target. The before run had one expected failure in 39 tests. The clean fixed run passed all 44 JUnit tests.
+- The student captured screenshots from the saved Maven output and reported that all 44 tests passed. Codex verified the evidence files and kept the original Surefire reports outside the repository. Live gameplay was not confirmed.

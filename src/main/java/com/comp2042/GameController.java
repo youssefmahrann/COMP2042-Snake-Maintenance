@@ -41,12 +41,17 @@ public class GameController {
         this.stage = stage;
 
         this.obstacle = obstacle;
+        if (coin == null) {
+            game.markBoardFull();
+        }
         animation.setCycleCount(Animation.INDEFINITE);
         animation.setRate(game.getSpeed());
     }
 
-    private final Timeline animation = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-        if (snek.getDead()) {
+    private final Timeline animation = new Timeline(new KeyFrame(Duration.seconds(1), event -> tick()));
+
+    private void tick() {
+        if (snek.getDead() || game.gameWon()) {
             return;
         } else {
 
@@ -61,13 +66,13 @@ public class GameController {
             }
 
             if (!snek.getDead() && snek.ateCoin(coin)) {
+                int points = coin.getPoints();
                 powerCoin();
-                game.incScore();
+                game.recordCollection(points, this::newCoin);
                 if (game.gameWon()) {
-                    gameView.drawGrid(coin, snek, obstacle, gameView.gc, false, 0);
-                    return;
+                    coin = null;
+                    animation.stop();
                 }
-                newCoin();
             }
 
             keyPressed = false;
@@ -80,12 +85,12 @@ public class GameController {
             gameView.gameOver(snek);
             gameView.updateScoreLabel();
         }
-    }));
+    }
 
     public void handle(KeyEvent event) {
-        if (event.getCode().isArrowKey()) animation.play();
+        if (event.getCode().isArrowKey() && !game.gameWon()) animation.play();
 
-        if (valKey(event.getCode()) && !keyPressed) {
+        if (!game.gameWon() && valKey(event.getCode()) && !keyPressed) {
             lastKey = key;
             key = event.getCode();
             keyPressed = true;
@@ -132,15 +137,16 @@ public class GameController {
         animation.stop();
 
         snek = new Snake(game.getWidth(), game.getHeight(), game.isNoBorder(), obstacle);
-        coin = new Coin(game.getWidth(), game.getHeight(), snek, obstacle);
-
-        int unusedObstacleCount = new Random().nextInt(game.getWidth() * game.getHeight() / 20) + 3;
+        obstacle.reset();
+        game.resetScore();
+        coin = Coin.spawn(CoinType.REGULAR, game, snek, obstacle).orElse(null);
+        if (coin == null) {
+            game.markBoardFull();
+        }
 
         animation.setRate(game.getSpeed());
         key = KeyCode.LEFT;
         keyPressed = false;
-        game.resetScore();
-        obstacle.reset();
 
         gameView.gameWon();
         gameView.gameOver(snek);
@@ -157,28 +163,20 @@ public class GameController {
             animation.setRate(game.getSpeed() + tempCoin.getSpeedBonus());
         } else if (coin.getClass().equals(SilverCoin.class)){
             Random rnd = new Random();
-            int requested = rnd.nextInt(game.getWidth() * game.getHeight() / 20) + 3;
+            int requested = rnd.nextInt(Math.max(1, game.getWidth() * game.getHeight() / 20)) + 3;
             int placed = obstacle.newObstacles(snek, coin, requested);
             game.decMaxScore(placed);
         } else if (coin.getClass().equals(BlueCoin.class)) {
             snek.ignoreBorders(true);
         }
-        game.addPoints(coin.getPoints());
     }
 
-    private void newCoin() {
+    /** Creates a replacement coin if the board still has room. */
+    private boolean newCoin() {
         boolean powerUpsEnabled = game.isPowerUp();
         int roll = powerUpsEnabled ? new Random().nextInt(CoinType.ROLL_COUNT) : 0;
         CoinType type = CoinType.select(roll, powerUpsEnabled, !obstacle.getObstacles().isEmpty());
-        int width = game.getWidth();
-        int height = game.getHeight();
-
-        coin = switch (type) {
-            case GOLD -> new GoldCoin(width, height, snek, obstacle);
-            case RAINBOW -> new RainbowCoin(width, height, snek, obstacle);
-            case BLUE -> new BlueCoin(width, height, snek, obstacle);
-            case SILVER -> new SilverCoin(width, height, snek, obstacle);
-            case REGULAR -> new Coin(width, height, snek, obstacle);
-        };
+        coin = Coin.spawn(type, game, snek, obstacle).orElse(null);
+        return coin != null;
     }
 }

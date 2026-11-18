@@ -31,7 +31,7 @@ public class MainMenuController {
         Game game = new Game(X_VALUE, Y_VALUE, POWER_UP, DIFFICULTY);
         Obstacle obstacle = new Obstacle(game.getWidth(), game.getHeight());
         Snake snek = new Snake(game.getWidth(), game.getHeight(), game.isNoBorder(), obstacle);
-        Coin coin = new Coin(game.getWidth(), game.getHeight(), snek, obstacle);
+        Coin coin = Coin.spawn(CoinType.REGULAR, game, snek, obstacle).orElse(null);
 
         GameView gameView = new GameView(game);
         GameController controller = new GameController(snek, coin, game, gameView, obstacle, gameStage);

@@ -1,0 +1,51 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< com.advancedsnake:snake-javafx >-------------------
+[INFO] Building Advanced Snake (JavaFX) 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ snake-javafx ---
+[INFO] Deleting C:\Users\yosse\Documents\CW2026\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ snake-javafx ---
+[INFO] Copying 21 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ snake-javafx ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 16 source files with javac [debug release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ snake-javafx ---
+[INFO] skip non existing resourceDirectory C:\Users\yosse\Documents\CW2026\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ snake-javafx ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug release 21] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ snake-javafx ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.comp2042.CoinPlacementTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.121 s -- in com.comp2042.CoinPlacementTest
+[INFO] Running com.comp2042.CoinTypeTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.289 s -- in com.comp2042.CoinTypeTest
+[INFO] Running com.comp2042.DirectionValidatorTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.082 s -- in com.comp2042.DirectionValidatorTest
+[INFO] Running com.comp2042.FullBoardTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.096 s -- in com.comp2042.FullBoardTest
+[INFO] Running com.comp2042.ObstacleTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.048 s -- in com.comp2042.ObstacleTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.245 s
+[INFO] Finished at: 2026-11-19T05:21:36+08:00
+[INFO] ------------------------------------------------------------------------

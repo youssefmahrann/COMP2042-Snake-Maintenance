@@ -1,0 +1,77 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< com.advancedsnake:snake-javafx >-------------------
+[INFO] Building Advanced Snake (JavaFX) 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ snake-javafx ---
+[INFO] Deleting C:\Users\yosse\Documents\CW2026\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ snake-javafx ---
+[INFO] Copying 21 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ snake-javafx ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 15 source files with javac [debug release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ snake-javafx ---
+[INFO] skip non existing resourceDirectory C:\Users\yosse\Documents\CW2026\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ snake-javafx ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug release 21] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ snake-javafx ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.comp2042.CoinPlacementTest
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.163 s <<< FAILURE! -- in com.comp2042.CoinPlacementTest
+[ERROR] com.comp2042.CoinPlacementTest.returnsEmptyOnAFullBoard -- Time elapsed: 0.019 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Coin placement exhausted its retry budget ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.comp2042.CoinPlacementTest.lambda$boundedRandom$0(CoinPlacementTest.java:36)
+	at com.comp2042.Coin.selectPosition(Coin.java:25)
+	at com.comp2042.CoinPlacementTest.returnsEmptyOnAFullBoard(CoinPlacementTest.java:18)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[INFO] Running com.comp2042.CoinTypeTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.387 s -- in com.comp2042.CoinTypeTest
+[INFO] Running com.comp2042.DirectionValidatorTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s -- in com.comp2042.DirectionValidatorTest
+[INFO] Running com.comp2042.ObstacleTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.095 s -- in com.comp2042.ObstacleTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   CoinPlacementTest.returnsEmptyOnAFullBoard:18->lambda$boundedRandom$0:36 Coin placement exhausted its retry budget ==> expected: <true> but was: <false>
+[INFO] 
+[ERROR] Tests run: 39, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.575 s
+[INFO] Finished at: 2026-11-19T05:11:34+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.2:test (default-test) on project snake-javafx: There are test failures.
+[ERROR] 
+[ERROR] See C:\Users\yosse\Documents\CW2026\target\surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

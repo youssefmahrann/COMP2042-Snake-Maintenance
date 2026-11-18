@@ -166,22 +166,18 @@ public class GameController {
     }
 
     private void newCoin() {
-        if (game.isPowerUp()) {
-            Random rnd = new Random();
-            int ran = rnd.nextInt(12);
-            if (ran == 1) {
-                coin = new GoldCoin(game.getWidth(), game.getHeight(), snek, obstacle);
-            } else if (ran == 1) {
-                coin = new RainbowCoin(game.getWidth(), game.getHeight(), snek, obstacle);
-            } else if (ran == 3) {
-                coin = new BlueCoin(game.getWidth(), game.getHeight(), snek, obstacle);
-            } else if (ran == 4 && obstacle.getObstacles().size() == 0) {
-                coin = new SilverCoin(game.getWidth(), game.getHeight(), snek, obstacle);
-            } else {
-                coin = new Coin(game.getWidth(), game.getHeight(), snek, obstacle);
-            }
-        } else {
-            coin = new Coin(game.getWidth(), game.getHeight(), snek, obstacle);
-        }
+        boolean powerUpsEnabled = game.isPowerUp();
+        int roll = powerUpsEnabled ? new Random().nextInt(CoinType.ROLL_COUNT) : 0;
+        CoinType type = CoinType.select(roll, powerUpsEnabled, !obstacle.getObstacles().isEmpty());
+        int width = game.getWidth();
+        int height = game.getHeight();
+
+        coin = switch (type) {
+            case GOLD -> new GoldCoin(width, height, snek, obstacle);
+            case RAINBOW -> new RainbowCoin(width, height, snek, obstacle);
+            case BLUE -> new BlueCoin(width, height, snek, obstacle);
+            case SILVER -> new SilverCoin(width, height, snek, obstacle);
+            case REGULAR -> new Coin(width, height, snek, obstacle);
+        };
     }
 }

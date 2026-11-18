@@ -2,12 +2,15 @@ package com.comp2042;
 
 import javafx.scene.paint.Color;
 
+import java.util.function.BooleanSupplier;
+
 public class Game {
     private Color color = Color.web("feffe4");
     private int width;
     private int height;
     private int score;
     private int maxScore;
+    private boolean boardFull;
     private double multiplier;
     private int scorePoints;
     private double speed;
@@ -38,7 +41,24 @@ public class Game {
     }
 
     public boolean gameWon() {
-        return score == maxScore;
+        return boardFull || score == maxScore;
+    }
+
+    /** Records the points once and requests a replacement only while play can continue. */
+    void recordCollection(int points, BooleanSupplier spawnNextCoin) {
+        if (gameWon()) {
+            return;
+        }
+        addPoints(points);
+        incScore();
+        if (!gameWon() && !spawnNextCoin.getAsBoolean()) {
+            markBoardFull();
+        }
+    }
+
+    /** Marks the game won when there is no free cell for a coin. */
+    void markBoardFull() {
+        boardFull = true;
     }
 
     public void incScore() {
@@ -58,6 +78,8 @@ public class Game {
     }
 
     public void resetScore() {
+        boardFull = false;
+        maxScore = width * height - 2;
         score = 0;
         scorePoints = 0;
     }

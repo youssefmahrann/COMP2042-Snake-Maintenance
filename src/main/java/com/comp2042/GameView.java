@@ -60,6 +60,7 @@ public class GameView {
         scoreLabel.getStylesheets().add(css);
         scoreLabel.setFont(new Font("Arial", 20));
         scoreLabel.setVisible(true);
+        gameWon();
     }
 
     public void scaleToFullscreen(boolean fullScreen, Stage primaryStage, Obstacle obstacle, Snake snek, Coin coin) {
@@ -93,7 +94,7 @@ public class GameView {
         gc.setFill(game.getColor());
         gc.fillRect(0, 0, gridCanvas.getWidth(), gridCanvas.getHeight());
 
-        gc.drawImage(coin.getImage(), (coin.getPos().x * game.getMultiplier()) * fullScale, (coin.getPos().y * game.getMultiplier()) * fullScale, game.getMultiplier() * fullScale - 3 * fullScale, game.getMultiplier() * fullScale - 3 * fullScale);
+        drawCoin(coin, gc);
 
         int bodyIndex = 0;
         for (Point point : snek.getBody()) {
@@ -109,11 +110,22 @@ public class GameView {
         }
     }
 
+    /** Draws the active coin when the board has a free position for it. */
+    private void drawCoin(Coin coin, GraphicsContext gc) {
+        if (coin == null) {
+            return;
+        }
+        Point position = coin.getPos();
+        double cellSize = game.getMultiplier() * fullScale;
+        double coinSize = cellSize - 3 * fullScale;
+        gc.drawImage(coin.getImage(), position.x * cellSize, position.y * cellSize, coinSize, coinSize);
+    }
+
     private void drawGrid(Coin coin, Snake snek, GraphicsContext gc) {
         gc.setFill(game.getColor());
         gc.fillRect(0, 0, gridCanvas.getWidth(), gridCanvas.getHeight());
 
-        gc.drawImage(coin.getImage(), (coin.getPos().x * game.getMultiplier()) * fullScale, (coin.getPos().y * game.getMultiplier()) * fullScale, game.getMultiplier() * fullScale - 3 * fullScale, game.getMultiplier() * fullScale - 3 * fullScale);
+        drawCoin(coin, gc);
 
         int bodyIndex = 0;
         for (Point point : snek.getBody()) {

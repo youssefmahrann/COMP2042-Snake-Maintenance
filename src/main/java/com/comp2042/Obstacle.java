@@ -6,9 +6,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class Obstacle {
     private Color color = Color.BLACK;
@@ -39,20 +38,11 @@ public class Obstacle {
             return 0;
         }
 
-        Set<Point> occupied = new HashSet<>(body);
+        List<Point> occupied = new ArrayList<>(body);
         occupied.add(head);
         occupied.add(coin);
         occupied.addAll(obstacles);
-
-        ArrayList<Point> freeCells = new ArrayList<>();
-        for (int row = 0; row < y; row++) {
-            for (int column = 0; column < x; column++) {
-                Point cell = new Point(column, row);
-                if (!occupied.contains(cell)) {
-                    freeCells.add(cell);
-                }
-            }
-        }
+        List<Point> freeCells = FreeCells.onBoard(x, y, occupied);
 
         int count = Math.min(amount, freeCells.size() - 1);
         if (count <= 0) {

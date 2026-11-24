@@ -1,7 +1,5 @@
 package com.comp2042;
 
-import javafx.scene.image.Image;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,11 +10,11 @@ import java.util.function.Supplier;
 
 public class Coin {
     private final Point pos;
-    private Image image = new Image("resources/views/res/redcoin.png");
-
+    private final CoinType type;
     /** Creates a coin at a position selected by the spawner. */
-    Coin(Point position) {
+    Coin(Point position, CoinType type) {
         pos = new Point(position);
+        this.type = type;
     }
 
     /** Spawns the requested coin type, or returns empty if the board is full. */
@@ -27,7 +25,7 @@ public class Coin {
                     case RAINBOW -> new RainbowCoin(position);
                     case BLUE -> new BlueCoin(position);
                     case SILVER -> new SilverCoin(position);
-                    case REGULAR -> new Coin(position);
+                    case REGULAR -> new Coin(position, CoinType.REGULAR);
                 });
     }
 
@@ -47,12 +45,14 @@ public class Coin {
         return new Point(pos);
     }
 
+    /** Returns the type used to choose this coin's sprite. */
+    CoinType getType() {
+        return type;
+    }
+
     public int getPoints() {
         int points = 5;
         return points;
     }
 
-    public Image getImage() {
-        return image;
-    }
 }

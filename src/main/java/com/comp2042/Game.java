@@ -1,17 +1,13 @@
 package com.comp2042;
 
-import javafx.scene.paint.Color;
-
 import java.util.function.BooleanSupplier;
 
 public class Game {
-    private Color color = Color.web("feffe4");
     private int width;
     private int height;
     private int score;
     private int maxScore;
     private boolean boardFull;
-    private double multiplier;
     private int scorePoints;
     private double speed;
     private boolean powerUp;
@@ -33,11 +29,6 @@ public class Game {
         height = y;
         maxScore = x * y - 2;
         this.powerUp = powerUp;
-        if (height > 50) {
-            multiplier = 10;
-        } else {
-            multiplier = 20;
-        }
     }
 
     public boolean gameWon() {
@@ -82,14 +73,6 @@ public class Game {
         maxScore = width * height - 2;
         score = 0;
         scorePoints = 0;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public double getMultiplier() {
-        return multiplier;
     }
 
     public void addPoints(int n) {

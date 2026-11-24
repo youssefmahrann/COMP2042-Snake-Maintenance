@@ -1,7 +1,5 @@
 package com.comp2042;
 
-import javafx.scene.paint.Color;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 public class Obstacle {
-    private Color color = Color.BLACK;
     private ArrayList<Point> obstacles = new ArrayList<>();
     private int x;
     private int y;
@@ -52,10 +49,6 @@ public class Obstacle {
         Collections.shuffle(freeCells, random);
         obstacles.addAll(freeCells.subList(0, count));
         return count;
-    }
-
-    public Color getColor() {
-        return color;
     }
 
     public ArrayList<Point> getObstacles() {

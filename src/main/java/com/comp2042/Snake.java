@@ -1,15 +1,9 @@
 package com.comp2042;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-
 import java.awt.Point;
 import java.util.ArrayList;
 
 public class Snake {
-    private Color headColor = Color.web("2eb872");
-    private Color bodyColor = Color.web("a3de83");
     private boolean dead = false;
     private final Point head = new Point();
     private final ArrayList<Point> body = new ArrayList<>();
@@ -18,10 +12,6 @@ public class Snake {
     private boolean ignoreBorders = false;
     private boolean noBorder;
     private Obstacle obstacle;
-    private ImageView imageHead;
-    private ImageView imageBody;
-    private ImageView imageTurn;
-    private ImageView imageTail;
     private int snakeDir = 270;
 
     public Snake(int x, int y, boolean noBorder, Obstacle obstacle) {
@@ -92,16 +82,6 @@ public class Snake {
         dead = body.subList(firstOccupiedSegment, body.size()).contains(destination);
     }
 
-    public int getBodyDir(int bodyCount) {
-        if (bodyCount == 0) {
-            return 0;
-        } else if (body.get(bodyCount).getY() == body.get(bodyCount - 1).getY()) {
-            return 270;
-        } else {
-            return 0;
-        }
-    }
-
     public boolean ateCoin(Coin coin) {
         return ateCoinAt(coin.getPos());
     }
@@ -131,14 +111,6 @@ public class Snake {
         return new Point(head);
     }
 
-    public Color getHeadColor() {
-        return headColor;
-    }
-
-    public Color getBodyColor() {
-        return bodyColor;
-    }
-
     public boolean getDead() {
         return dead;
     }
@@ -147,35 +119,8 @@ public class Snake {
         ignoreBorders = ign;
     }
 
-    public ImageView getImageViewHead() {
-        if (imageHead == null) {
-            imageHead = new ImageView(new Image("resources/views/res/snakehead.png"));
-        }
-        return imageHead;
-    }
-
-    public ImageView getImageViewBody() {
-        if (imageBody == null) {
-            imageBody = new ImageView(new Image("resources/views/res/snakebody.png"));
-        }
-        return imageBody;
-    }
-
-    public ImageView getImageViewTurn() {
-        if (imageTurn == null) {
-            imageTurn = new ImageView(new Image("resources/views/res/snaketurnleft.png"));
-        }
-        return imageTurn;
-    }
-
     public int getSnakeDir() {
         return snakeDir;
     }
 
-    public ImageView getImageViewTail() {
-        if (imageTail == null) {
-            imageTail = new ImageView(new Image("resources/views/res/snaketail.png"));
-        }
-        return imageTail;
-    }
 }

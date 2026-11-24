@@ -55,14 +55,11 @@ public class GameController {
             return;
         } else {
 
-            if (key.equals(KeyCode.LEFT)) {
-                snek.move('L');
-            } else if (key.equals(KeyCode.RIGHT)) {
-                snek.move('R');
-            } else if (key.equals(KeyCode.UP)) {
-                snek.move('U');
-            } else if (key.equals(KeyCode.DOWN)) {
-                snek.move('D');
+            switch (key) {
+                case LEFT -> snek.move('L', coin.getPos());
+                case RIGHT -> snek.move('R', coin.getPos());
+                case UP -> snek.move('U', coin.getPos());
+                case DOWN -> snek.move('D', coin.getPos());
             }
 
             if (!snek.getDead() && snek.ateCoin(coin)) {

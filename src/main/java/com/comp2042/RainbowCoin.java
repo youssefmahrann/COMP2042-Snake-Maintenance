@@ -1,15 +1,12 @@
 package com.comp2042;
 
-import javafx.scene.image.Image;
 
 import java.awt.Point;
 
 public class RainbowCoin extends Coin {
-    private Image image = new Image("resources/views/res/rainbowcoin.png");
-
     /** Creates this coin at the position selected by the spawner. */
     RainbowCoin(Point position) {
-        super(position);
+        super(position, CoinType.RAINBOW);
     }
 
     public int getPoints() {
@@ -22,7 +19,4 @@ public class RainbowCoin extends Coin {
         return speedBonus;
     }
 
-    public Image getImage() {
-        return image;
-    }
 }

@@ -7,7 +7,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
@@ -18,12 +17,10 @@ public class GameController {
     private Coin coin;
     private GameView gameView;
     private Game game;
-    private Stage stage;
     private String coinSoundPath = "resources/views/res/coinSound.wav";
     private Obstacle obstacle;
 
-    public static KeyCode key = KeyCode.LEFT;
-    public static KeyCode lastKey = KeyCode.LEFT;
+    private KeyCode key = KeyCode.LEFT;
     private boolean keyPressed = false;
 
     private int legacyScoreMultiplier = 2;
@@ -33,12 +30,11 @@ public class GameController {
         System.out.println("Bonus score: " + bonus);
     }
 
-    public GameController(Snake snek, Coin coin, Game game, GameView gameView, Obstacle obstacle, Stage stage) {
+    public GameController(Snake snek, Coin coin, Game game, GameView gameView, Obstacle obstacle) {
         this.snek = snek;
         this.coin = coin;
         this.gameView = gameView;
         this.game = game;
-        this.stage = stage;
 
         this.obstacle = obstacle;
         if (coin == null) {
@@ -75,12 +71,10 @@ public class GameController {
             keyPressed = false;
 
             if (!snek.getDead() || snek.hitSelf()) {
-                gameView.drawGrid(coin, snek, obstacle, gameView.gc, false, 0);
+                gameView.renderBoard(snek, coin, obstacle);
             }
 
-            gameView.gameWon();
-            gameView.gameOver(snek);
-            gameView.updateScoreLabel();
+            gameView.updateStatus(game.getScorePoints(), game.gameWon(), snek.getDead());
         }
     }
 
@@ -88,10 +82,10 @@ public class GameController {
         if (event.getCode().isArrowKey() && !game.gameWon()) animation.play();
 
         if (!game.gameWon() && valKey(event.getCode()) && !keyPressed) {
-            lastKey = key;
+            KeyCode previous = key;
             key = event.getCode();
             keyPressed = true;
-            gameView.turnDir(snek);
+            gameView.recordTurn(snek.getHead(), previous, key);
         }
 
         if (event.getCode().equals(KeyCode.P)) {
@@ -100,21 +94,16 @@ public class GameController {
 
         if (event.getCode().equals(KeyCode.TAB)) {
             reset();
-            gameView.scoreLabel.setText("Score: " + game.getScorePoints());
         }
 
         if (event.getCode().equals(KeyCode.PLUS)) {
-            gameView.scaleToFullscreen(true, stage, obstacle, snek, coin);
-            gameView.gameOverLabel.setStyle("-fx-font-size: 50;");
-            gameView.gameWonLabel.setStyle("-fx-font-size: 50;");
-            gameView.scoreLabel.setStyle("-fx-font-size: 35;");
+            gameView.setFullscreen(true);
+            gameView.renderBoard(snek, coin, obstacle);
         }
 
         if (event.getCode().equals(KeyCode.MINUS)) {
-            gameView.scaleToFullscreen(false, stage, obstacle, snek, coin);
-            gameView.gameOverLabel.setStyle("-fx-font-size: 15;");
-            gameView.gameWonLabel.setStyle("-fx-font-size: 15;");
-            gameView.scoreLabel.setStyle("-fx-font-size: 15;");
+            gameView.setFullscreen(false);
+            gameView.renderBoard(snek, coin, obstacle);
         }
 
         if (event.getCode().equals(KeyCode.ESCAPE)) {
@@ -144,12 +133,10 @@ public class GameController {
         animation.setRate(game.getSpeed());
         key = KeyCode.LEFT;
         keyPressed = false;
+        gameView.clearTurns();
 
-        gameView.gameWon();
-        gameView.gameOver(snek);
-        gameView.updateScoreLabel();
-
-        gameView.drawGrid(coin, snek, obstacle, gameView.gc, false, 0);
+        gameView.updateStatus(game.getScorePoints(), game.gameWon(), snek.getDead());
+        gameView.renderBoard(snek, coin, obstacle);
     }
 
     private void powerCoin() {

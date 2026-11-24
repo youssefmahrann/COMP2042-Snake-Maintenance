@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class Snake {
@@ -18,14 +18,10 @@ public class Snake {
     private boolean ignoreBorders = false;
     private boolean noBorder;
     private Obstacle obstacle;
-    private Image imgInputHead = new Image("resources/views/res/snakehead.png");
-    private ImageView imageHead = new ImageView(imgInputHead);
-    private Image imgInputBody = new Image("resources/views/res/snakebody.png");
-    private ImageView imageBody = new ImageView(imgInputBody);
-    private Image imgInputTurn = new Image("resources/views/res/snaketurnleft.png");
-    private ImageView imageTurn = new ImageView(imgInputTurn);
-    private Image imgInputTail = new Image("resources/views/res/snaketail.png");
-    private ImageView imageTail = new ImageView(imgInputTail);
+    private ImageView imageHead;
+    private ImageView imageBody;
+    private ImageView imageTurn;
+    private ImageView imageTail;
     private int snakeDir = 270;
 
     public Snake(int x, int y, boolean noBorder, Obstacle obstacle) {
@@ -37,57 +33,63 @@ public class Snake {
         this.gy = y;
     }
 
+    /** Moves one cell on a turn with no coin at the destination. */
     public void move(char dir) {
-        body.add(new Point(head));
+        move(dir, null);
+    }
+
+    /**
+     * Moves toward the requested direction and checks the landing cell.
+     * The tail remains occupied if the landing cell contains a coin.
+     *
+     * @param dir the movement direction
+     * @param coinPosition the active coin position, or null for a move without a coin
+     */
+    void move(char dir, Point coinPosition) {
+        if (dead) {
+            return;
+        }
+
+        Point destination = new Point(head);
         switch (dir) {
-            case 'U':
+            case 'U' -> {
                 snakeDir = 0;
-                head.translate(0, -1);
-                if (borderControl() && (!ignoreBorders && !noBorder) || obstacle.getObstacles().contains(head)) {
-                    head.translate(0, 1);
-                    dead = true;
-                } else if (borderControl() && (ignoreBorders || noBorder)) {
-                    head.setLocation(head.getX(), gy - 1);
-                }
-                break;
-
-            case 'D':
+                destination.translate(0, -1);
+            }
+            case 'D' -> {
                 snakeDir = 180;
-                head.translate(0, 1);
-                if (borderControl() && (!ignoreBorders && !noBorder) || obstacle.getObstacles().contains(head)) {
-                    head.translate(0, -1);
-                    dead = true;
-                } else if (borderControl() && (ignoreBorders || noBorder)) {
-                    head.setLocation(head.getX(), 0);
-                }
-                break;
-
-            case 'L':
+                destination.translate(0, 1);
+            }
+            case 'L' -> {
                 snakeDir = 270;
-                head.translate(-1, 0);
-                if (borderControl() && (!ignoreBorders && !noBorder) || obstacle.getObstacles().contains(head)) {
-                    head.translate(1, 0);
-                    dead = true;
-                } else if (borderControl() && (ignoreBorders || noBorder)) {
-                    head.setLocation(gx - 1, head.getY());
-                }
-                break;
-
-            case 'R':
+                destination.translate(-1, 0);
+            }
+            case 'R' -> {
                 snakeDir = 90;
-                head.translate(1, 0);
-                if (borderControl() && (!ignoreBorders && !noBorder) || obstacle.getObstacles().contains(head)) {
-                    head.translate(-1, 0);
-                    dead = true;
-                } else if (borderControl() && (ignoreBorders || noBorder)) {
-                    head.setLocation(0, head.getY());
-                }
-                break;
+                destination.translate(1, 0);
+            }
+            default -> {
+                return;
+            }
         }
 
-        if (body.size() > 4 && hitSelf() && !body.get(0).equals(head)) {
-            dead = true;
+        if (isOutsideBoard(destination)) {
+            if (!ignoreBorders && !noBorder) {
+                dead = true;
+                return;
+            }
+            destination.setLocation(Math.floorMod(destination.x, gx), Math.floorMod(destination.y, gy));
         }
+
+        if (obstacle.getObstacles().contains(destination)) {
+            dead = true;
+            return;
+        }
+
+        body.add(new Point(head));
+        head.setLocation(destination);
+        int firstOccupiedSegment = destination.equals(coinPosition) ? 0 : 1;
+        dead = body.subList(firstOccupiedSegment, body.size()).contains(destination);
     }
 
     public int getBodyDir(int bodyCount) {
@@ -101,14 +103,20 @@ public class Snake {
     }
 
     public boolean ateCoin(Coin coin) {
-        if (!head.equals(coin.getPos())) {
-            body.remove(0);
-        }
-        return head.equals(coin.getPos());
+        return ateCoinAt(coin.getPos());
     }
 
-    private boolean borderControl() {
-        return head.getX() < 0 || head.getY() < 0 || head.getX() >= gx || head.getY() >= gy;
+    /** Updates growth after moving, based on the coin position. */
+    boolean ateCoinAt(Point coinPosition) {
+        if (!head.equals(coinPosition)) {
+            body.remove(0);
+        }
+        return head.equals(coinPosition);
+    }
+
+    /** Checks whether a proposed move leaves the playable grid. */
+    private boolean isOutsideBoard(Point position) {
+        return position.x < 0 || position.y < 0 || position.x >= gx || position.y >= gy;
     }
 
     public boolean hitSelf() {
@@ -140,14 +148,23 @@ public class Snake {
     }
 
     public ImageView getImageViewHead() {
+        if (imageHead == null) {
+            imageHead = new ImageView(new Image("resources/views/res/snakehead.png"));
+        }
         return imageHead;
     }
 
     public ImageView getImageViewBody() {
+        if (imageBody == null) {
+            imageBody = new ImageView(new Image("resources/views/res/snakebody.png"));
+        }
         return imageBody;
     }
 
     public ImageView getImageViewTurn() {
+        if (imageTurn == null) {
+            imageTurn = new ImageView(new Image("resources/views/res/snaketurnleft.png"));
+        }
         return imageTurn;
     }
 
@@ -156,6 +173,9 @@ public class Snake {
     }
 
     public ImageView getImageViewTail() {
+        if (imageTail == null) {
+            imageTail = new ImageView(new Image("resources/views/res/snaketail.png"));
+        }
         return imageTail;
     }
 }

@@ -19,3 +19,9 @@
 - Codex traced coin placement and the win path, added a deterministic reproducer for the original retry loop, and implemented the shared free-cell scan and final-coin handling.
 - Codex added regression tests for scoring once, continuing when space remains, skipping replacement after a win, and resetting the win target. The before run had one expected failure in 39 tests. The clean fixed run passed all 44 JUnit tests.
 - The student captured screenshots from the saved Maven output and reported that all 44 tests passed. Codex verified the evidence files and kept the original Surefire reports outside the repository. Live gameplay was not confirmed.
+
+## Snake collision fix
+
+- Codex traced movement, wraparound, and growth, then wrote deterministic tests that reproduced four missed wrapped obstacle collisions and one missed short-snake self-collision.
+- Codex updated movement to check the wrapped landing cell and account for whether the tail vacates it. Additional JUnit cases cover walls, safe wrapping, the Blue coin effect, growth, and collision state after reset.
+- The before run reported 49 tests with 5 expected failures. The clean fixed run passed all 63 tests, including the 44 existing tests. The student captured screenshots from the saved Maven output. Manual gameplay testing has not been confirmed.

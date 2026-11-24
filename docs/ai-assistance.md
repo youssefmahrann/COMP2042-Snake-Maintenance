@@ -1,4 +1,4 @@
-﻿# AI assistance record
+# AI assistance record
 
 ## Rainbow coin fix — 19 November 2026
 
@@ -25,3 +25,9 @@
 - Codex traced movement, wraparound, and growth, then wrote deterministic tests that reproduced four missed wrapped obstacle collisions and one missed short-snake self-collision.
 - Codex updated movement to check the wrapped landing cell and account for whether the tail vacates it. Additional JUnit cases cover walls, safe wrapping, the Blue coin effect, growth, and collision state after reset.
 - The before run reported 49 tests with 5 expected failures. The clean fixed run passed all 63 tests, including the 44 existing tests. The student captured screenshots from the saved Maven output. Manual gameplay testing has not been confirmed.
+
+## GameView rendering ownership
+
+- Codex reviewed the controller and view boundaries, then moved scene layout, status styling, sprite selection, and fullscreen scaling into GameView in separate edits.
+- Codex ran the clean 63-test baseline and the final 87-test suite, including 24 presentation tests. Both original UTF-8 logs are in docs/evidence. Surefire reports were archived outside the repository.
+- Codex ran an automated JavaFX launch check through the existing FXML Start action. The game scene opened with its initial status labels. The student supplied before-and-after test screenshots and confirmed the automated results. The student has not confirmed manual visual gameplay or fullscreen testing.
